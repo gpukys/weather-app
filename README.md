@@ -1,8 +1,7 @@
-# WEB system
-- [ ] Replace "WEB system" with your system name
+# Weather App
 
 ## Description
-- [ ] Provide WEB system description in few sentences - its purpose, users, etc.
+- A basic weather app providing the user information about a specific cities current weather. Also integrates google maps for advanced city searching
 
 ## Entity definition
 - [ ] Define the entity ("object" that will be manipulated) of WEB system
