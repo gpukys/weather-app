@@ -20,9 +20,9 @@
 ## API definition
 - The websystem is going to use https://www.apixu.com API
 - The websystem is going to expose methods to:
-- Get current weather
-- Get weather forecast for 1-10 days
-- Get weather history
+    - Get current weather
+    - Get weather forecast for 1-10 days
+    - Get weather history
 - [ ] API should have at least 4 methods
     - [ ] A method to return entity by ID. Should not have request body
     - [ ] A method to return multiple entities (Array) by ID. This method should support at least one header value to:
