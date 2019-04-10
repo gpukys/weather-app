@@ -4,19 +4,25 @@
 - A basic weather app providing the user information about a specific cities current weather. Also integrates google maps for advanced city searching
 
 ## Entity definition
-- [ ] Define the entity ("object" that will be manipulated) of WEB system
-- [ ] Entity should have a name
-- [ ] Entity should have 3 mandatory attributes:
-    - [ ] ID - depending on specific service this could be a number or string
-    - [ ] Creation date - (if applicable for specific service) ISO 8601 format date string
-    - [ ] Modification date - (if applicable for specific service) ISO 8601 format date string
-- [ ] Entity should have at least 5 custom attributes
-    - [ ] Each attribute should have a type defined: number, string, ISO 8601 date string, boolean, object, array or other
-    - [ ] Each attribute should have restrictions defined: list of constants, or number range, or string length, or string format, or object schema, or array schema or other. For example, you can use `joi` language to define restrictions: https://github.com/hapijs/joi/blob/v13.1.2/API.md
+- The selected cities weather
+- Weather
+- 3 mandatory attributes:
+    - Coordinates: number
+    - LocalTime: Date
+    - Temperature celsius: number
+- 5 custom attributes:
+    - City Name: string
+    - Condition: {text: string, icon: string, code: number}
+    - Wind: {speed: number, direction: string}
+    - Pressure: number
+    - FeelsLike celsius: number
 
 ## API definition
-- [ ] Define specific service (konkrečios paslaugos) API methods that WEB system is going to use
-- [ ] Optionally define additional API methods that WEB system is going to expose
+- The websystem is going to use https://www.apixu.com API
+- The websystem is going to expose methods to:
+- Get current weather
+- Get weather forecast for 1-10 days
+- Get weather history
 - [ ] API should have at least 4 methods
     - [ ] A method to return entity by ID. Should not have request body
     - [ ] A method to return multiple entities (Array) by ID. This method should support at least one header value to:
@@ -32,7 +38,7 @@
 - [ ] Should return all 5xx errors in unified format. Define format using `joi` language
 
 ## UI definition
-- [ ] Define the structure of how visually the WEB system is going to look like
+- The websystem is going to use Material Design guidelines
 - [ ] Should have at least one view defined with https://wireframe.cc (or other wireframe tool):
 - [ ] The view should have a title
 - [ ] The view should have a description of a service provided by web system
