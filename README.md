@@ -18,32 +18,19 @@
     - FeelsLike celsius: number
 
 ## API definition
+The websystem is going to store data locally, so it won't have the standart CRUD functionality using an external database.
 - The websystem is going to use https://www.apixu.com API
 - The websystem is going to expose methods to:
-    - Get current weather
-    - Get weather forecast for 1-10 days
-    - Get weather history
-- [ ] API should have at least 4 methods
-    - [ ] A method to return entity by ID. Should not have request body
-    - [ ] A method to return multiple entities (Array) by ID. This method should support at least one header value to:
-        - [ ] Return only entities that match pattern in one of its attributes
-        - [ ] Return 10 entities starting provided index
-        - [ ] Return sorted entities by one of its attributes (both ascending and descending)
-        - [ ] Other (should be approved by Product Owner (PO))
-    - [ ] A method to remove entity by ID. Returns removed entity. Should not have request body
-    - [ ] A method to update entity by ID. Accepts entity to update and returns updated entity
-- [ ] Each method should have HTTP method defined
-- [ ] Each method should have URI defined (use {id} as entity ID placeholder)
-- [ ] Should return all 4xx errors in unified format. Define format using `joi` language
-- [ ] Should return all 5xx errors in unified format. Define format using `joi` language
+    - Get current weather by city coordinates
+    - Get cities weather forecast for 1-10 days
+    - Get cities weather history
+- API methods
+    - GET current weather by city coordinates http://api.apixu.com/v1/current.json?&q=long,lat
+    - GET weather forecast by city coordinates http://api.apixu.com/v1/forecast.json?&q=long,lat
+    - GET weather history by city coordinates http://api.apixu.com/v1/history.json?&q=long,lat
+    - POST city string to return list of found city coordinates (search) https://api.opencagedata.com/geocode/v1/json?q=city
 
 ## UI definition
 - The websystem is going to use Material Design guidelines
-- [ ] Should have at least one view defined with https://wireframe.cc (or other wireframe tool):
-- [ ] The view should have a title
-- [ ] The view should have a description of a service provided by web system
-- [ ] The view should include at least 2 UI components:
-    - [ ] A component to display multiple entities with all their attribute values visible. It should be posible to remove and edit selected entity.
-        - [ ] Depending on chosen header of API method that returns multiple entities, it should be posible to select specific 10 entities starting index, sort entities by attribute, filter entities by attribute pattern, or other (should be approved by Product Owner (PO))
-    - [ ] A component to create a new entity/edit existing entity. It should be posbile to create new entity and edit selected entity
-        - [ ] Each attribute should have a dedicated editor field: text box for string or number, checkbox or radio buttons for boolean, date picker for date, etc.
+- The starting view, when there are no cities selected https://wireframe.cc/wuShHQ
+    - Clicking on the plus sign prompts the user to add a city to display that cities information in the card
