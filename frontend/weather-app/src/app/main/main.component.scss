@@ -1,0 +1,15 @@
+@import '../../constants.scss';
+
+:host {
+  height: 100%;
+  width: 100%;
+  background-color: $background-light;
+  display: inline-block;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
