@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconRegistry, MatIconModule, MatDividerModule, MatToolbarModule, MatCardModule, MatButtonModule } from '@angular/material';
+import { MatIconRegistry, MatIconModule, MatDividerModule, MatToolbarModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatAutocompleteModule, MatInputModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './main/main.component';
 import { WeatherCardComponent } from './weather-card/weather-card.component';
 import { StorageService } from './storage.service';
 import { WeatherService } from './weather.service';
+import { SearchService } from './search.service';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,11 +28,17 @@ import { WeatherService } from './weather.service';
     MatToolbarModule,
     MatDividerModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatInputModule
   ],
   providers: [
     StorageService,
-    WeatherService
+    WeatherService,
+    SearchService
   ],
   bootstrap: [AppComponent]
 })

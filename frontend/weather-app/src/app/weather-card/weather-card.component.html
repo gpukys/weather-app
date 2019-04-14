@@ -7,14 +7,30 @@
     </div>
 
     <ng-template #addNew>
-      <div class="add-new">
+      <div class="add-new" *ngIf="!input">
         <span>Add new city</span>
         <button mat-mini-fab
-                color="accent">
+                color="accent"
+                (click)="toggleInput()">
           <mat-icon svgIcon="plus"></mat-icon>
         </button>
       </div>
+      <form *ngIf="input" [formGroup]="searchForm">
+      
+        <mat-form-field>
+          <input type="text" matInput formControlName="query" [matAutocomplete]="auto">
+        </mat-form-field>
+      
+      </form>
     </ng-template>
 
   </div>
 </mat-card>
+
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <ng-container>
+      <mat-option *ngFor="let city of cities | async" [value]="city">
+        {{city.formatted}}
+      </mat-option>
+    </ng-container>
+  </mat-autocomplete>

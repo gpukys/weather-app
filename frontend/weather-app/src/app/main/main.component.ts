@@ -18,7 +18,6 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.currentCoordinates = this.storageService.getCoordinates();
-
     if (!this.currentCoordinates) {
       if (window.navigator.geolocation) {
         window.navigator.geolocation.getCurrentPosition(e => {
