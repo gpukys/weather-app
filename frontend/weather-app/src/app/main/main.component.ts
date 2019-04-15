@@ -26,6 +26,11 @@ export class MainComponent implements OnInit {
         });
       }
     }
+  }
 
+  setCoordinates(coordinates: Coordinates) {
+    if (!this.currentCoordinates) {
+      this.storageService.setCoordinates(coordinates.lat, coordinates.long);
     }
   }
+}

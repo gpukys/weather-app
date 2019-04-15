@@ -1,4 +1,4 @@
 <div class="container">
-  <app-weather-card [coordinates]="currentCoordinates">
+  <app-weather-card [coordinates]="currentCoordinates" (gotWeather)="setCoordinates($event)">
   </app-weather-card>
 </div>

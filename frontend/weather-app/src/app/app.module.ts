@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconRegistry, MatIconModule, MatDividerModule, MatToolbarModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatAutocompleteModule, MatInputModule } from '@angular/material';
+import { MatIconRegistry, MatIconModule, MatDividerModule, MatToolbarModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatAutocompleteModule, MatInputModule, MatProgressSpinnerModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './main/main.component';
 import { WeatherCardComponent } from './weather-card/weather-card.component';
@@ -33,7 +33,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MatAutocompleteModule,
     ReactiveFormsModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     StorageService,

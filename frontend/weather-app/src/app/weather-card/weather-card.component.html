@@ -2,8 +2,10 @@
   <div class="container">
 
     <div *ngIf="currentWeather; else addNew">
-      {{currentWeather.tempCelsius}}
-      {{currentWeather.country}}
+      <div class="degrees">
+        {{currentWeather.tempCelsius}}&#176;
+      </div>
+      {{locationData?.formatted}}
     </div>
 
     <ng-template #addNew>
@@ -18,7 +20,7 @@
       <form *ngIf="input" [formGroup]="searchForm">
       
         <mat-form-field>
-          <input type="text" matInput formControlName="query" [matAutocomplete]="auto">
+          <input type="text" matInput [placeholder]="'Start typing...'" formControlName="query" [matAutocomplete]="auto">
         </mat-form-field>
       
       </form>
