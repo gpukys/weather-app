@@ -6,16 +6,18 @@
 ## Entity definition
 - The selected cities weather
 - Weather
-- 3 mandatory attributes:
-    - Coordinates: number
-    - LocalTime: Date
-    - Temperature celsius: number
+- 5 mandatory attributes:
+    - Lat: number joi().number().min(-90).max(90)
+    - Long: number joi().number().min(-180).max(180)
+    - FormattedName: string joi().string().max(150)
+    - TempC: number number.joi().min(-999).max(999)
+    - TempF: number number.joi().min(-999).max(999)
 - 5 custom attributes:
-    - City Name: string
     - Condition: {text: string, icon: string, code: number}
     - Wind: {speed: number, direction: string}
-    - Pressure: number
-    - FeelsLike celsius: number
+    - Pressure: number number.joi().max(9999)
+    - FeelsLikeC: number number.joi().min(-999).max(999)
+    - FeelsLikeF: number number.joi().min(-999).max(999)
 
 ## API definition
 The websystem is going to store data locally, so it won't have the standart CRUD functionality using an external database.
