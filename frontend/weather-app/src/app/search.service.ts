@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { of, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { pluck, map } from 'rxjs/operators';
-import { prepareSyntheticPropertyName } from '@angular/compiler/src/render3/util';
 const API_KEY = '1d65b907c66e4d0db99131b327e4b002';
 
 @Injectable({
@@ -16,10 +15,24 @@ export class SearchService {
   ) { }
 
   getCities(query: string): Observable<City> {
-    return this.httpClient.get(this.searchUrl, {
+    return this.httpClient.get<City[]>(this.searchUrl, {
       params: {
         key: API_KEY,
         q: query
+      }
+    }).pipe(
+      pluck('results'),
+      map(res => {
+        return (res as any).map(city => this.parseCity(city));
+      }),
+    );
+  }
+
+  getCityByLocation(lat: number, long: number) {
+    return this.httpClient.get<City[]>(this.searchUrl, {
+      params: {
+        key: API_KEY,
+        q: `${lat},${long}`
       }
     }).pipe(
       pluck('results'),
@@ -34,10 +47,11 @@ export class SearchService {
       return {
         country: res.components.country,
         county: res.components.county || res.components.state,
-        city: res.components.city || res.components.hamlet,
+        city: res.components.city || res.components.hamlet || res.components.state_district,
         lat: res.geometry.lat,
         long: res.geometry.lng,
-        formatted: res.formatted
+        formatted: res.formatted,
+        uid: null
       };
     } else {
       return null;
@@ -52,4 +66,5 @@ export interface City {
   lat: number;
   long: number;
   formatted: string;
+  uid: string;
 }

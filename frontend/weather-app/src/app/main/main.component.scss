@@ -13,3 +13,17 @@
   align-items: center;
   justify-content: center;
 }
+
+.last-elements {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & app-weather-card:first-child {
+    margin-right: 16px;
+  }
+}
+
+.weather-card {
+  margin-right: 16px;
+}

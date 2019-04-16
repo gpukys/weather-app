@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService, Coordinates } from '../storage.service';
+import { v4 as uuid } from 'uuid';
+import { City, SearchService } from '../search.service';
 
 @Component({
   selector: 'app-main',
@@ -10,27 +12,41 @@ import { StorageService, Coordinates } from '../storage.service';
 
 export class MainComponent implements OnInit {
 
-  currentCoordinates: Coordinates;
+  cities: City[] = [];
 
   constructor(
     private storageService: StorageService,
+    private searchService: SearchService
   ) { }
 
   ngOnInit() {
-    this.currentCoordinates = this.storageService.getCoordinates();
-    if (!this.currentCoordinates) {
+    this.loadCities();
+    if (!this.cities) {
       if (window.navigator.geolocation) {
         window.navigator.geolocation.getCurrentPosition(e => {
-          this.storageService.setCoordinates(e.coords.latitude, e.coords.longitude);
-          this.currentCoordinates = this.storageService.getCoordinates();
+          this.searchService.getCityByLocation(e.coords.latitude, e.coords.longitude).subscribe(city => {
+            const res = city[0];
+            res.uid = uuid();
+            this.storageService.addCity(res);
+            this.loadCities();
+          });
         });
       }
     }
   }
 
-  setCoordinates(coordinates: Coordinates) {
-    if (!this.currentCoordinates) {
-      this.storageService.setCoordinates(coordinates.lat, coordinates.long);
-    }
+  onCitySelect(city: City) {
+    city.uid = uuid();
+    this.storageService.addCity(city);
+    this.loadCities();
+  }
+
+  loadCities() {
+    this.cities = this.storageService.getCities();
+  }
+
+  deleteCity(uid: string) {
+    this.storageService.deleteCity(uid);
+    this.loadCities();
   }
 }

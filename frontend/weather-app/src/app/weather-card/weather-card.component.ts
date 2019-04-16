@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, HostBinding, AfterViewInit, AfterViewChecked, AfterContentInit, Output, EventEmitter } from '@angular/core';
-import { Coordinates } from '../storage.service';
+import { Component, OnInit, Input, HostBinding, AfterViewInit, AfterViewChecked, AfterContentInit, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
 import { WeatherService, CurrentWeatherResponse } from '../weather.service';
 import { debounceTime, switchMap, startWith, tap, finalize } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
@@ -14,38 +13,48 @@ import { Observable } from 'rxjs';
 export class WeatherCardComponent implements OnInit, AfterContentInit {
 
   @Input()
-  set coordinates(value: Coordinates) {
+  set city(value: City) {
     if (value) {
-      this.coordinates$ = value;
+      this.cityData = value;
       this.weatherService.getCurrentWeather(value.lat, value.long).subscribe(res => {
         this.currentWeather = this.parseCurrentWeather(res);
-        this.gotWeather.emit(value);
       });
     }
   }
 
-  @Output() gotWeather = new EventEmitter();
+  @Output() selectedCity = new EventEmitter();
+  @Output() deletedCity = new EventEmitter();
 
-  private coordinates$: Coordinates;
+  cityData: City;
 
   input = false;
-
-  locationData: City;
 
   searchForm;
   cities: Observable<{}>;
 
   currentWeather: WeatherData;
 
+  selected = false;
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    if(this.eRef.nativeElement.contains(event.target) && this.currentWeather) {
+      this.selected = !this.selected;
+    } else {
+      this.selected = false;
+    }
+  }
+
   constructor(
     private weatherService: WeatherService,
     private searchService: SearchService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private eRef: ElementRef
   ) { }
 
   ngOnInit() {
     this.searchForm = this.fb.group({
-      query: null
+      query: ''
     });
   }
 
@@ -55,10 +64,9 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
       debounceTime(1000),
       switchMap((val: any) => {
         if (val.query && val.query.country) {
-          this.coordinates = {lat: val.query.lat, long: val.query.long};
-          this.locationData = val.query;
+          this.selectedCity.emit(val.query);
           return this.cities;
-        } else {
+        } else if (val) {
           return this.searchService.getCities(val.query);
         }
       }),
@@ -66,11 +74,13 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
   }
 
   private parseCurrentWeather(response: CurrentWeatherResponse): WeatherData {
+    const parse = response.current.condition.icon.split('/');
+
     return {
-      tempCelsius: response.current.temp_c,
-      tempFahrenheit: response.current.temp_f,
-      country: response.location.country,
-      locationName: response.location.name
+      tempC: Math.round(response.current.temp_c),
+      tempF: Math.round(response.current.temp_f),
+      iconPath: Array(parse[parse.length - 2], parse[parse.length - 1]).join('/'),
+      isDay: !!response.current.is_day
     };
   }
 
@@ -82,11 +92,19 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
     return city ? city.formatted : undefined;
   }
 
+  displayForecast() {
+    console.log('forecast');
+  }
+
+  deleteCity() {
+    this.deletedCity.emit(this.cityData.uid);
+  }
+
 }
 
 export interface WeatherData {
-  tempCelsius: string;
-  tempFahrenheit: string;
-  country: string;
-  locationName: string;
+  tempC: number;
+  tempF: number;
+  iconPath: string;
+  isDay: boolean;
 }

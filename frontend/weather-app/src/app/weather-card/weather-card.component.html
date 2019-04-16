@@ -1,21 +1,32 @@
-<mat-card>
-  <div class="container">
+<mat-card [ngClass]="{'day': currentWeather?.isDay, 'night': currentWeather && !currentWeather.isDay}">
+  <div class="overlay" *ngIf="selected">
+      <button mat-icon-button (click)="displayForecast()">
+          <mat-icon svgIcon="calendar-range"></mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteCity()">
+            <mat-icon svgIcon="delete"></mat-icon>
+          </button>
+  </div>
+  <div class="container" [ngClass]="selected? 'selected' : ''">
 
     <div *ngIf="currentWeather; else addNew">
       <div class="degrees">
-        {{currentWeather.tempCelsius}}&#176;
+        {{currentWeather.tempC}}&#176;
       </div>
-      {{locationData?.formatted}}
+      <div class="icon">
+        <img [src]="'assets/icons/' + currentWeather.iconPath">
+      </div>
+      <div class="city">
+        {{cityData.city || cityData.county || cityData.country}}
+      </div>
     </div>
 
     <ng-template #addNew>
       <div class="add-new" *ngIf="!input">
         <span>Add new city</span>
-        <button mat-mini-fab
-                color="accent"
-                (click)="toggleInput()">
-          <mat-icon svgIcon="plus"></mat-icon>
-        </button>
+        <button mat-icon-button (click)="toggleInput()">
+            <mat-icon svgIcon="plus"></mat-icon>
+          </button>
       </div>
       <form *ngIf="input" [formGroup]="searchForm">
       
@@ -29,7 +40,7 @@
   </div>
 </mat-card>
 
-<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" [panelWidth]="'400px'">
     <ng-container>
       <mat-option *ngFor="let city of cities | async" [value]="city">
         {{city.formatted}}

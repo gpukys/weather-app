@@ -26,15 +26,11 @@ export class WeatherService {
 
 export interface CurrentWeatherResponse {
   current: CurrentResponse;
-  location: LocationResponse;
 }
 
 export interface CurrentResponse {
-  temp_c: string;
-  temp_f: string;
-}
-
-export interface LocationResponse {
-  country: string;
-  name: string;
+  temp_c: number;
+  temp_f: number;
+  condition: {icon: string};
+  is_day: number;
 }
