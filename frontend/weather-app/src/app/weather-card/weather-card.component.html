@@ -19,6 +19,16 @@
       <div class="city">
         {{cityData.city || cityData.county || cityData.country}}
       </div>
+      <div class="forecast">
+        <div *ngFor="let item of forecast">
+          <span class="date">{{item.date}}</span>
+          <img class="icon" [src]="'assets/icons/' + item.iconPath">
+          <div class="temp">
+            <span>{{item.maxTempC}}&#176;</span>
+            <span>{{item.minTempC}}&#176;</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <ng-template #addNew>
@@ -36,7 +46,6 @@
       
       </form>
     </ng-template>
-
   </div>
 </mat-card>
 

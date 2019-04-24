@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, HostBinding, AfterViewInit, AfterViewChecked, AfterContentInit, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
-import { WeatherService, CurrentWeatherResponse } from '../weather.service';
+import { Component, OnInit, Input, AfterContentInit, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
+import { WeatherService, CurrentResponse, ForecastResponse } from '../weather.service';
 import { debounceTime, switchMap, startWith, tap, finalize } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { SearchService, City } from '../search.service';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-weather-card',
@@ -16,8 +17,13 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
   set city(value: City) {
     if (value) {
       this.cityData = value;
-      this.weatherService.getCurrentWeather(value.lat, value.long).subscribe(res => {
-        this.currentWeather = this.parseCurrentWeather(res);
+      const obs1 = this.weatherService.getCurrentWeather(value.lat, value.long);
+      const obs2 = this.weatherService.getWeatherForecast(value.lat, value.long);
+      forkJoin(obs1, obs2).subscribe(res => {
+        const current = res[0];
+        const forecast = res[1];
+        this.currentWeather = this.parseCurrentWeather(current);
+        this.forecast = this.parseForecast(forecast);
       });
     }
   }
@@ -33,12 +39,13 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
   cities: Observable<{}>;
 
   currentWeather: WeatherData;
+  forecast: ForecastData[];
 
   selected = false;
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    if(this.eRef.nativeElement.contains(event.target) && this.currentWeather) {
+    if (this.eRef.nativeElement.contains(event.target) && this.currentWeather) {
       this.selected = !this.selected;
     } else {
       this.selected = false;
@@ -73,15 +80,33 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
     );
   }
 
-  private parseCurrentWeather(response: CurrentWeatherResponse): WeatherData {
-    const parse = response.current.condition.icon.split('/');
+  private parseCurrentWeather(response: CurrentResponse): WeatherData {
+    const parse = response.condition.icon.split('/');
 
     return {
-      tempC: Math.round(response.current.temp_c),
-      tempF: Math.round(response.current.temp_f),
+      tempC: Math.round(response.temp_c),
+      tempF: Math.round(response.temp_f),
       iconPath: Array(parse[parse.length - 2], parse[parse.length - 1]).join('/'),
-      isDay: !!response.current.is_day
+      isDay: !!response.is_day
     };
+  }
+
+  private parseForecast(response: ForecastResponse[]): ForecastData[] {
+    const res: ForecastData[] = [];
+    response.forEach((forecast, index) => {
+      if (index !== 0) {
+        const parse = forecast.day.condition.icon.split('/');
+        res.push({
+          date: moment(forecast.date).format('MM-DD'),
+          maxTempC: Math.round(forecast.day.maxtemp_c),
+          maxTempF: Math.round(forecast.day.maxtemp_f),
+          minTempC: Math.round(forecast.day.mintemp_c),
+          minTempF: Math.round(forecast.day.mintemp_f),
+          iconPath: Array(parse[parse.length - 2], parse[parse.length - 1]).join('/')
+        });
+      }
+    });
+    return res;
   }
 
   toggleInput() {
@@ -107,4 +132,13 @@ export interface WeatherData {
   tempF: number;
   iconPath: string;
   isDay: boolean;
+}
+
+export interface ForecastData {
+  date: string;
+  maxTempC: number;
+  maxTempF: number;
+  minTempC: number;
+  minTempF: number;
+  iconPath: string;
 }

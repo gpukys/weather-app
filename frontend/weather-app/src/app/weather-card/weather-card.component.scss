@@ -1,7 +1,7 @@
 @import '../../constants.scss';
 
 mat-card {
-  width: 180px;
+  width: 220px;
   height: 300px;
 }
 
@@ -31,7 +31,9 @@ mat-card {
   }
 }
 
-.degrees{
+.degrees {
+  display: flex;
+  justify-content: center;
   font-size: 60px;
   margin-left: 16px;
   color: white;
@@ -42,6 +44,36 @@ mat-card {
   justify-content: center;
   color: white;
   font-size: 14px;
+}
+
+.city {
+  margin-bottom: 24px;
+}
+
+.forecast {
+  display: flex;
+  justify-content: space-between;
+  width: 220px;
+  font-size: 11px;
+  color: white;
+  > div {
+    display: flex;
+    flex-direction: column;
+    width: 37px;
+  }
+  & .date {
+    text-align: center;
+  }
+  & .icon {
+    height: 37px;
+    width: 37px;
+  }
+  & .temp {
+    justify-content: space-evenly;
+    display: flex;
+    font-size: 10px;
+  }
+  
 }
 
 .selected {
