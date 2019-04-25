@@ -68,13 +68,15 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
   ngAfterContentInit() {
     this.cities = this.searchForm.valueChanges.pipe(
       startWith(''),
-      debounceTime(1000),
+      debounceTime(300),
       switchMap((val: any) => {
         if (val.query && val.query.country) {
           this.selectedCity.emit(val.query);
           return this.cities;
         } else if (val) {
           return this.searchService.getCities(val.query);
+        } else {
+          return [];
         }
       }),
     );
@@ -97,7 +99,7 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
       if (index !== 0) {
         const parse = forecast.day.condition.icon.split('/');
         res.push({
-          date: moment(forecast.date).format('MM-DD'),
+          date: moment(forecast.date).format('ddd'),
           maxTempC: Math.round(forecast.day.maxtemp_c),
           maxTempF: Math.round(forecast.day.maxtemp_f),
           minTempC: Math.round(forecast.day.mintemp_c),
@@ -115,10 +117,6 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
 
   displayFn(city?: City): string | undefined {
     return city ? city.formatted : undefined;
-  }
-
-  displayForecast() {
-    console.log('forecast');
   }
 
   deleteCity() {

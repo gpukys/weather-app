@@ -1,11 +1,8 @@
 <mat-card [ngClass]="{'day': currentWeather?.isDay, 'night': currentWeather && !currentWeather.isDay}">
   <div class="overlay" *ngIf="selected">
-      <button mat-icon-button (click)="displayForecast()">
-          <mat-icon svgIcon="calendar-range"></mat-icon>
-        </button>
-        <button mat-icon-button (click)="deleteCity()">
-            <mat-icon svgIcon="delete"></mat-icon>
-          </button>
+      <button mat-icon-button (click)="deleteCity()">
+        <mat-icon svgIcon="delete"></mat-icon>
+      </button>
   </div>
   <div class="container" [ngClass]="selected? 'selected' : ''">
 

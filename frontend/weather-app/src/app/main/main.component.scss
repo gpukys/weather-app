@@ -2,6 +2,7 @@
 
 :host {
   height: 100%;
+  min-height: calc(100vh - 64px);
   width: 100%;
   background-color: $background-light;
   display: inline-block;
@@ -9,9 +10,12 @@
 
 .container {
   height: 100%;
+  min-height: calc(100vh - 100px);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+  padding: 16px 0;
 }
 
 .last-elements {
@@ -19,6 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   & app-weather-card:first-child {
     margin-right: 16px;
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StorageService, Coordinates } from '../storage.service';
+import { StorageService } from '../storage.service';
 import { v4 as uuid } from 'uuid';
 import { City, SearchService } from '../search.service';
 
@@ -21,7 +21,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.loadCities();
-    if (!this.cities) {
+    if (this.cities.length === 0) {
       if (window.navigator.geolocation) {
         window.navigator.geolocation.getCurrentPosition(e => {
           this.searchService.getCityByLocation(e.coords.latitude, e.coords.longitude).subscribe(city => {
