@@ -1,0 +1,99 @@
+@import '../../constants.scss';
+
+mat-card {
+  width: 220px;
+  height: 300px;
+}
+
+.day {
+  background-image: linear-gradient(to bottom, #1976d2, #3281dd, #448ce8, #5497f4, #63a3ff);
+}
+
+.night {
+  background-image: linear-gradient(to bottom, #38006b, #440577, #510d82, #5d148e, #6a1b9a);
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  transition: all 0.2s linear;
+  user-select: none;
+}
+
+.add-new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  & button {
+    background: $accent-color;
+  }
+}
+
+.degrees {
+  display: flex;
+  justify-content: center;
+  font-size: 60px;
+  margin-left: 16px;
+  color: white;
+}
+
+.icon, .city {
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+}
+
+.city {
+  margin-bottom: 54px;
+}
+
+.forecast {
+  display: flex;
+  justify-content: space-between;
+  width: 220px;
+  font-size: 12px;
+  color: white;
+  > div {
+    display: flex;
+    flex-direction: column;
+    width: 37px;
+  }
+  & .date {
+    text-align: center;
+  }
+  & .icon {
+    height: 37px;
+    width: 37px;
+  }
+  & .temp {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+  }
+  
+}
+
+.selected {
+  filter: blur(6px);
+  transition: all 0.2s linear;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0px;
+  z-index: 2;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  & button {
+    background: $accent-color;
+  }
+}

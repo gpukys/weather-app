@@ -1,0 +1,55 @@
+<mat-card [ngClass]="{'day': currentWeather?.isDay, 'night': currentWeather && !currentWeather.isDay}">
+  <div class="overlay" *ngIf="selected">
+      <button mat-icon-button (click)="deleteCity()">
+        <mat-icon svgIcon="delete"></mat-icon>
+      </button>
+  </div>
+  <div class="container" [ngClass]="selected? 'selected' : ''">
+
+    <div *ngIf="currentWeather; else addNew">
+      <div class="degrees">
+        {{currentWeather.tempC}}&#176;
+      </div>
+      <div class="icon">
+        <img [src]="'assets/icons/' + currentWeather.iconPath">
+      </div>
+      <div class="city">
+        {{cityData.city || cityData.county || cityData.country}}
+      </div>
+      <div class="forecast">
+        <div *ngFor="let item of forecast">
+          <span class="date">{{item.date}}</span>
+          <img class="icon" [src]="'assets/icons/' + item.iconPath">
+          <div class="temp">
+            <span>{{item.maxTempC}}&#176;</span>
+            <span>{{item.minTempC}}&#176;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #addNew>
+      <div class="add-new" *ngIf="!input">
+        <span>Add new city</span>
+        <button mat-icon-button (click)="toggleInput()">
+            <mat-icon svgIcon="plus"></mat-icon>
+          </button>
+      </div>
+      <form *ngIf="input" [formGroup]="searchForm">
+      
+        <mat-form-field>
+          <input type="text" matInput [placeholder]="'Start typing...'" formControlName="query" [matAutocomplete]="auto">
+        </mat-form-field>
+      
+      </form>
+    </ng-template>
+  </div>
+</mat-card>
+
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" [panelWidth]="'400px'">
+    <ng-container>
+      <mat-option *ngFor="let city of cities | async" [value]="city">
+        {{city.formatted}}
+      </mat-option>
+    </ng-container>
+  </mat-autocomplete>
