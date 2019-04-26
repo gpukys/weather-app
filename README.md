@@ -30,6 +30,40 @@ The websystem is going to store data locally, so it won't have the standart CRUD
     - GET weather forecast by city coordinates http://api.apixu.com/v1/forecast.json?&q=long,lat
     - GET weather history by city coordinates http://api.apixu.com/v1/history.json?&q=long,lat
     - POST city string to return list of found city coordinates (search) https://api.opencagedata.com/geocode/v1/json?q=city
+    - POST city to save to favorites 'api/favorites'
+        - Request body
+        ```
+        {city: City}
+        Interface City {
+           lat: number;
+           long: number;
+           id?: number
+        }
+        ```
+        - Response body
+        ```
+        {id: number}
+        ```
+        - 400 (BAD REQUEST)
+        ```{error: 'The field {{field}} is required'}```
+        - 400 (BAD REQUEST)
+        ```{error: 'The field must be between -180 and 180'}```
+     - GET all favorite cities 'api/favorites'
+        - Response body
+        ```
+        {city: City}
+        Interface City {
+           lat: number;
+           long: number;
+           id: number;
+        }
+        ```
+     - DELETE city by id 'api/favorites/:id
+          - 404 (NOT FOUND)
+          ```
+          {error: 'City with id {{id}} not found'}
+          ```
+            
 
 ## UI definition
 - The websystem is going to use Material Design guidelines
