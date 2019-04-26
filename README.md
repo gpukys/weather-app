@@ -1,15 +1,14 @@
 # Weather App
 
 ## Description
-- A basic weather app providing the user information about a specific cities current weather. Also integrates google maps for advanced city searching
+- A basic weather app providing the user information about a specific cities current weather.
 
 ## Entity definition
 - The selected cities weather
 - Weather
-- 5 mandatory attributes:
+- 4 mandatory attributes:
     - Lat: number joi().number().min(-90).max(90)
     - Long: number joi().number().min(-180).max(180)
-    - FormattedName: string joi().string().max(150)
     - TempC: number number.joi().min(-999).max(999)
     - TempF: number number.joi().min(-999).max(999)
 - 5 custom attributes:
