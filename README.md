@@ -51,7 +51,7 @@ The websystem is going to store data locally, so it won't have the standart CRUD
      - GET all favorite cities 'api/favorites'
         - Response body
         ```
-        {city: City}
+        {city: City[]}
         Interface City {
            lat: number;
            long: number;
