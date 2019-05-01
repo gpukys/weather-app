@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { City } from './search.service';
-const COORDINATES = 'coordinates';
 const CITIES = 'cities';
 
 @Injectable({

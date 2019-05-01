@@ -1,14 +1,16 @@
-const path = require('path');
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
 
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'dist')));
-app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
-});
+const favorite = require('./routes/favorite');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({'extended':'false'}));
+
+app.use('/api/favorite', favorite);
 
 app.listen(port, (error) => {
   if (error) {

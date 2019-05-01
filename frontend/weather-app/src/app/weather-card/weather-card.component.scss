@@ -97,3 +97,10 @@ mat-card {
     background: $accent-color;
   }
 }
+
+.favorite-icon {
+  position: absolute;
+  top: -16px;
+  right: 16px;
+  cursor: pointer;
+}

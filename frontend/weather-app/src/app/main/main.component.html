@@ -1,14 +1,18 @@
 <div class="container">
   <div *ngFor="let city of cities; let i=index; let last = last" class="weather-card">
       <app-weather-card *ngIf="!last; else lastTemplate" [city]="city"
+      [isFavorite]="isFavorite(city.uid)"
       (selectedCity)="onCitySelect($event)"
-      (deletedCity)="deleteCity($event)">
+      (deletedCity)="deleteCity($event)"
+      (favoriteToggle)="onFavoriteToggle($event)">
       </app-weather-card>
       <ng-template #lastTemplate>
         <div class="last-elements">
             <app-weather-card [city]="city"
+            [isFavorite]="isFavorite(city.uid)"
             (selectedCity)="onCitySelect($event)"
-            (deletedCity)="deleteCity($event)">
+            (deletedCity)="deleteCity($event)"
+            (favoriteToggle)="onFavoriteToggle($event)">
             </app-weather-card>
             <app-weather-card
             (selectedCity)="onCitySelect($event)">

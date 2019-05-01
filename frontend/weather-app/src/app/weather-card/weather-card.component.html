@@ -9,6 +9,7 @@
     <div *ngIf="currentWeather; else addNew">
       <div class="degrees">
         {{currentWeather.tempC}}&#176;
+        <mat-icon (click)="$event.stopPropagation(); favoriteClicked()" class="favorite-icon" color="accent" [svgIcon]="favorite? 'heart' : 'heart-outline'"></mat-icon>
       </div>
       <div class="icon">
         <img [src]="'assets/icons/' + currentWeather.iconPath">
