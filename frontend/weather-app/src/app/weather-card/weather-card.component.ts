@@ -28,8 +28,14 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
     }
   }
 
+  @Input()
+  set isFavorite(value: boolean) {
+    this.favorite = value;
+  }
+
   @Output() selectedCity = new EventEmitter();
   @Output() deletedCity = new EventEmitter();
+  @Output() favoriteToggle = new EventEmitter();
 
   cityData: City;
 
@@ -40,6 +46,8 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
 
   currentWeather: WeatherData;
   forecast: ForecastData[];
+
+  favorite = false;
 
   selected = false;
 
@@ -109,6 +117,10 @@ export class WeatherCardComponent implements OnInit, AfterContentInit {
       }
     });
     return res;
+  }
+
+  favoriteClicked() {
+    this.favoriteToggle.emit({favorite: !this.favorite, city: this.cityData});
   }
 
   toggleInput() {

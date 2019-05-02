@@ -12,12 +12,21 @@ import { StorageService } from './storage.service';
 import { WeatherService } from './weather.service';
 import { SearchService } from './search.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { OktaAuthModule } from '@okta/okta-angular';
+import { LoginComponent } from './login/login.component';
+
+const config = {
+  issuer: 'https://dev-875305.okta.com/oauth2/default',
+  redirectUri: 'http://localhost:4200/implicit/callback',
+  clientId: '0oaj4a7szHbbiJhag356'
+};
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
-    WeatherCardComponent
+    WeatherCardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +43,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    OktaAuthModule.initAuth(config)
   ],
   providers: [
     StorageService,
