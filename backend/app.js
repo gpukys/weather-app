@@ -1,10 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
-const app = express();
 
+const app = express();
 const favorite = require('./routes/favorite');
 
 app.use(bodyParser.json());

@@ -1,10 +1,38 @@
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid/v4');
+const OktaJwtVerifier = require('@okta/jwt-verifier');
 const favorites = [];
 
+const oktaJwtVerifier = new OktaJwtVerifier({
+  issuer: 'https://dev-875305.okta.com/oauth2/default',
+  clientId: '0oaj4a7szHbbiJhag356',
+  assertClaims: {
+    aud: 'api://default',
+  },
+});
+
+function authenticationRequired(req, res, next) {
+  const authHeader = req.headers.authorization || '';
+  const match = authHeader.match(/Bearer (.+)/);
+
+  if (!match) {
+    return res.status(401).end();
+  }
+
+  const accessToken = match[1];
+
+  return oktaJwtVerifier.verifyAccessToken(accessToken)
+    .then((jwt) => {
+      req.jwt = jwt;
+      next();
+    })
+    .catch((err) => {
+      res.status(401).send(err.message);
+    });
+}
+
 /* POST new favorite city */
-router.post('/', (req, res) => {
+router.post('/', authenticationRequired, (req, res) => {
   if (req.body.lat === undefined) {
     res.status(400).json({
       error: 'The field lat is required'
@@ -34,12 +62,12 @@ router.post('/', (req, res) => {
 })
 
 /* GET all favorite cities */
-router.get('/', (req, res) => {
+router.get('/', authenticationRequired, (req, res) => {
   res.status(200).json(favorites);
 });
 
 /* DELETE city by id */
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticationRequired, (req, res) => {
   const index = favorites.findIndex(city => city.uid === req.params.id);
   if (index === -1) {
     res.status(404).json({error: `The city with id:${req.params.id} was not found`});
