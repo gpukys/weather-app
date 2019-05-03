@@ -24,25 +24,28 @@ The websystem is going to store data locally, so it won't have the standart CRUD
 - The websystem is going to expose methods to:
     - Get current weather by city coordinates
     - Get cities weather forecast for 1-10 days
-    - Get cities weather history
+    - Create, delete favorite cities
 - API methods
     - GET current weather by city coordinates http://api.apixu.com/v1/current.json?&q=long,lat
     - GET weather forecast by city coordinates http://api.apixu.com/v1/forecast.json?&q=long,lat
-    - GET weather history by city coordinates http://api.apixu.com/v1/history.json?&q=long,lat
     - POST city string to return list of found city coordinates (search) https://api.opencagedata.com/geocode/v1/json?q=city
     - POST city to save to favorites 'api/favorites'
         - Request body
         ```
         {city: City}
         Interface City {
-           lat: number;
-           long: number;
-           id?: number
+           city: string
+           country: string
+           county: string
+           formatted: string
+           lat: number
+           long: number
+           uid: string
         }
         ```
         - Response body
         ```
-        {id: number}
+        {uid: string}
         ```
         - 400 (BAD REQUEST)
         ```{error: 'The field {{field}} is required'}```
@@ -53,9 +56,13 @@ The websystem is going to store data locally, so it won't have the standart CRUD
         ```
         {city: City[]}
         Interface City {
-           lat: number;
-           long: number;
-           id: number;
+           city: string
+           country: string
+           county: string
+           formatted: string
+           lat: number
+           long: number
+           uid: string
         }
         ```
      - DELETE city by id 'api/favorites/:id
